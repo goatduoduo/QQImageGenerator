@@ -2,6 +2,7 @@
 
 #### 介绍
 原用于为QQ的自动续火脚本生成图片的java程序。根据命令将图片复制到剪切板中从而通过脚本将图片发送到指定QQ用户中。仍然在开发中……
+
 Release分支包含jar包和使用脚本，使用前请配置好java和ahk。
 
 
@@ -14,6 +15,9 @@ Release分支包含jar包和使用脚本，使用前请配置好java和ahk。
 #### 使用说明
 
 jar包可以被cmd命令调用，主要功能是将生成图片并将其送入剪贴板中。同时在当前目录下会生成后缀名为json的用户信息。
+调用示例（cmd/bash）：
+> java -Dfile.encoding=utf-8 -jar QQImageGenerator.jar tr 预热测试
+
 可以使用的命令
 1.  rc user //生成随机颜色和幸运数字
 2.  tr user //生成15连抽
