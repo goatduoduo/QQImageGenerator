@@ -1,11 +1,9 @@
-package com.duoduo.Util;
+package com.duoduo.util;
 
-import com.duoduo.RandomUtil.RandomColor;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  * @Date: Created in 2022/11/20 19:06
  */
 public class CsvUtil {
-    public static List<String[]> parseCsv( InputStream inputStream){
+    public static List<String[]> parseCsv(InputStream inputStream){
         //创建一个配置选项，用来提供多种配置选项
         CsvParserSettings parserSettings = new CsvParserSettings();
         //打开解析器的自动检测功能，让它自动检测输入中包含的分隔符
@@ -41,5 +39,4 @@ public class CsvUtil {
 
         return rows;
     }
-
 }

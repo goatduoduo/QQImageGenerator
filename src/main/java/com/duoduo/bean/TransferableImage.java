@@ -1,4 +1,4 @@
-package com.duoduo.Util;
+package com.duoduo.bean;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -11,9 +11,9 @@ import java.io.IOException;
  * @Description:
  * @Date: Created in 2022/11/20 21:23
  */
-public class Images implements Transferable {
+public class TransferableImage implements Transferable {
     private final Image image;
-    public Images(Image image) {this.image = image;}
+    public TransferableImage(Image image) {this.image = image;}
     @Override
     public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[]{DataFlavor.imageFlavor};

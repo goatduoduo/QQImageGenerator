@@ -1,4 +1,4 @@
-package com.duoduo.Bean;
+package com.duoduo.bean;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-import com.duoduo.RandomUtil.RandomColor;
+import com.duoduo.util.random.RandomColor;
 import org.junit.Test;
 
 /**

@@ -1,13 +1,9 @@
-package com.duoduo.RandomUtil;
+package com.duoduo.util.random;
 
-import com.duoduo.Bean.ColorBean;
-import com.duoduo.Util.CsvUtil;
+import com.duoduo.bean.ColorBean;
 
-import java.awt.*;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.duoduo.Bean;
+package com.duoduo.component.entity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

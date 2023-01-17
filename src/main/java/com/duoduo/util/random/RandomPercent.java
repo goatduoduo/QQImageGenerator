@@ -1,4 +1,4 @@
-package com.duoduo.RandomUtil;
+package com.duoduo.util.random;
 
 import java.util.Random;
 

@@ -1,3 +1,5 @@
 /.idea/
 /out/
 /target/
+/QQImageGenerator.iml
+*.json

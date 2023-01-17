@@ -1,8 +1,8 @@
-package com.duoduo.Bean;
+package com.duoduo.component.entity;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ArrayUtil;
-import com.duoduo.Util.ImageUtil;
+import com.duoduo.util.ImageUtil;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;

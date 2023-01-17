@@ -1,8 +1,7 @@
-package com.duoduo.Util;
+package com.duoduo.util;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONWriter;
-import com.duoduo.User.UserConfig;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +12,7 @@ import java.nio.file.Files;
  * @Description:
  * @Date: Created in 2023/1/15 22:01
  */
+
 public class ConfigUtil {
 
     /**
@@ -20,22 +20,31 @@ public class ConfigUtil {
      */
     private static String CONFIG_FILE_PATH = System.getProperty("user.dir") + "\\";
 
+    /**
+     * 打开json文件并读取到对象中
+     * @param fileName 文件名字，自动加上 .json
+     * @param classz 类名，例如UserConfig.class
+     * @param <T> 泛型
+     * @return 读取的对象
+     */
     public static <T> T readUserConfig(String fileName, Class<T> classz)  {
-        String file_path =  CONFIG_FILE_PATH + fileName + ".json";
+        String filePath =  CONFIG_FILE_PATH + fileName + ".json";
         T ans = null;
         try {
-            InputStream is = new FileInputStream(file_path);
+            InputStream is = new FileInputStream(filePath);
             int iAvail = is.available();
             byte[] bytes = new byte[iAvail];
+            //noinspection ResultOfMethodCallIgnored
             is.read(bytes);
             String text = new String(bytes);
             ans = JSON.parseObject(text, classz);
             is.close();
 
         } catch (FileNotFoundException e) {
-            System.out.println("暂无" + file_path + "正在新建……");
-            File file = new File(file_path);
+            System.out.println("暂无" + filePath + "正在新建……");
+            File file = new File(filePath);
             try {
+                //noinspection ResultOfMethodCallIgnored
                 file.createNewFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -46,6 +55,12 @@ public class ConfigUtil {
         return ans;
     }
 
+    /**
+     * 将对象写入到json文件中
+     * @param fileName 文件名字，自动加上 .json
+     * @param content 类名，例如UserConfig.class
+     * @param <T> 泛型
+     */
     public static <T> void writeConfig(String fileName,T content){
         File file = new File(CONFIG_FILE_PATH + fileName + ".json");
         OutputStream out = null;

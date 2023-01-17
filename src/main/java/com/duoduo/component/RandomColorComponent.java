@@ -1,18 +1,19 @@
-package com.duoduo.Component;
+package com.duoduo.component;
 
-import com.duoduo.Bean.BackgroundEntity;
-import com.duoduo.Bean.ColorBean;
-import com.duoduo.Bean.PolygonEntity;
-import com.duoduo.Bean.TextEntity;
-import com.duoduo.RandomUtil.RandomColor;
-import com.duoduo.RandomUtil.RandomNumber;
-import com.duoduo.RandomUtil.RandomPercent;
-import com.duoduo.Util.UserConfigUtil;
+import com.duoduo.util.CsvUtil;
+import com.duoduo.component.entity.BackgroundEntity;
+import com.duoduo.bean.ColorBean;
+import com.duoduo.component.entity.PolygonEntity;
+import com.duoduo.component.entity.TextEntity;
+import com.duoduo.util.random.RandomColor;
+import com.duoduo.util.random.RandomNumber;
+import com.duoduo.util.random.RandomPercent;
+import com.duoduo.config.UserConfig;
+import com.duoduo.util.ConfigUtil;
 
 import java.awt.*;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
 
 /**
  * @Author: goatduoduo
@@ -21,12 +22,18 @@ import java.net.URL;
  */
 public class RandomColorComponent extends BackgroundEntity {
     public RandomColorComponent(String userName) {
+        initColorCsv();
         long start = System.currentTimeMillis();
         setBackgroundColor(new Color(246, 246, 246));
         setWidth(560);
+        //读取用户信息的json文件，如果是新用户则会创建一个新的默认文件
+        UserConfig user = ConfigUtil.readUserConfig(userName,UserConfig.class);
+        if(user == null){
+            user = new UserConfig(userName);
+        }
 
         ColorBean colorBean = RandomColor.randomColor();
-
+        //颜色大标题
         TextEntity textTitle = new TextEntity();
         textTitle.setTextContent(userName + "选中的幸运颜色是" + colorBean.getTitle());
         textTitle.setFontSize(20.0f);
@@ -36,9 +43,10 @@ public class RandomColorComponent extends BackgroundEntity {
         textTitle.setContentWidth(400);
         TextEntity detailTitle = new TextEntity();
 
-        if(UserConfigUtil.userConfig.getLastSelectedColor() != null){
+        //上一次选中的颜色
+        if(user.getLastSelectedColor() != null){
             TextEntity lastColor = new TextEntity();
-            lastColor.setTextContent(userName + "上一次抽中了" + UserConfigUtil.userConfig.getLastSelectedColor());
+            lastColor.setTextContent(userName + "上一次抽中了" + user.getLastSelectedColor());
             lastColor.setFontSize(12.0f);
             lastColor.setX(20f);
             lastColor.setY(242f);
@@ -46,7 +54,7 @@ public class RandomColorComponent extends BackgroundEntity {
             getChildren().add(lastColor);
         }
 
-
+        //颜色介绍小字
         detailTitle.setTextContent(colorBean.getDetail().replace("<name>", userName));
         detailTitle.setFontSize(12.0f);
         detailTitle.setFontColor(new Color(180, 180, 180));
@@ -54,9 +62,11 @@ public class RandomColorComponent extends BackgroundEntity {
         detailTitle.setY(80f);
         detailTitle.setContentWidth(400);
 
+        //右侧颜色梯形
         PolygonEntity polygonEntity = new PolygonEntity(new int[]{560, 0, 560, 300, 340, 300, 460, 0},
                 colorBean.getColor());
 
+        //幸运数字
         TextEntity luckyNumber = new TextEntity();
         final int complexNumberPercent = 25;
         String luckyNumberString = "";
@@ -83,7 +93,22 @@ public class RandomColorComponent extends BackgroundEntity {
             textTitle.setFontColor(Color.BLACK);
         }
 
-        UserConfigUtil.userConfig.setLastSelectedColor(colorBean.getTitle());
+        user.setLastSelectedColor(colorBean.getTitle());
+        ConfigUtil.writeConfig(userName,user);
         System.out.println("随机颜色摘要：" + colorBean.getTitle() + " "+luckyNumberString +" 生成用时:" +(System.currentTimeMillis()-start)+"ms");
+    }
+
+    /**
+     * 读取csv文件以初始化
+     */
+    private void initColorCsv(){
+        long start = System.currentTimeMillis();
+        InputStream url=this.getClass().getResourceAsStream("/data/colors.csv");
+        List<String[]> list = CsvUtil.parseCsv(url);
+        for (String[] e:list){
+            ColorBean temp = new ColorBean(new Color(Integer.parseInt(e[1]),Integer.parseInt(e[2]),Integer.parseInt(e[3])),e[0],e[4],Integer.parseInt(e[5]));
+            RandomColor.COLORS.add(temp);
+        }
+        System.out.println("初始化用时："+ (System.currentTimeMillis()-start)+"ms");
     }
 }

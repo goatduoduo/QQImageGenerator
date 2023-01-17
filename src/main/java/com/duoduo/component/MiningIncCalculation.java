@@ -1,12 +1,11 @@
-package com.duoduo.Component;
+package com.duoduo.component;
 
-import com.duoduo.RandomUtil.RandomNumber;
-import com.duoduo.User.UserConfig;
-import com.duoduo.Util.ConfigUtil;
+import com.duoduo.util.random.RandomNumber;
+import com.duoduo.config.UserConfig;
+import com.duoduo.util.ConfigUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

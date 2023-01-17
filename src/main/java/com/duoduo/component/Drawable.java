@@ -1,7 +1,6 @@
-package com.duoduo.Impl;
+package com.duoduo.component;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * @Author: goatduoduo

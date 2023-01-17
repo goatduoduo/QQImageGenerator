@@ -1,14 +1,14 @@
-package com.duoduo.Bean;
+package com.duoduo.component.entity;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.duoduo.Util.Images;
+import com.duoduo.bean.TransferableImage;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.duoduo.Util.ImageUtil.getG2d;
+import static com.duoduo.util.ImageUtil.getG2d;
 
 
 /**
@@ -118,7 +118,7 @@ public class BackgroundEntity {
         System.out.println("渲染用时："+(System.currentTimeMillis()-start)+"ms");
         start = System.currentTimeMillis();
         //将图片送入剪贴板
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new Images(bufferedImage),null);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new TransferableImage(bufferedImage),null);
         System.out.println("送入剪贴板用时："+(System.currentTimeMillis()-start)+"ms");
     }
 }

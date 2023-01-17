@@ -1,4 +1,4 @@
-package com.duoduo.User;
+package com.duoduo.config;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 
@@ -106,11 +106,4 @@ public class UserConfig {
         this.messages = messages;
     }
 
-    public int getCurrentLvl() {
-        return cash / 650 + 1;
-    }
-
-    public int getCurrentExp() {
-        return cash % 650;
-    }
 }

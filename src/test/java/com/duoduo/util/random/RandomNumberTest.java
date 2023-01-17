@@ -1,8 +1,6 @@
-package com.duoduo.RandomUtil;
+package com.duoduo.util.random;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @Author: goatduoduo

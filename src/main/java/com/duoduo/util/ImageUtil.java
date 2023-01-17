@@ -1,4 +1,4 @@
-package com.duoduo.Util;
+package com.duoduo.util;
 
 import cn.hutool.core.util.ArrayUtil;
 

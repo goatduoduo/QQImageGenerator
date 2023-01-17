@@ -1,9 +1,8 @@
-package com.duoduo.Bean;
+package com.duoduo.component.entity;
 
-import com.duoduo.Impl.Drawable;
+import com.duoduo.component.Drawable;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 

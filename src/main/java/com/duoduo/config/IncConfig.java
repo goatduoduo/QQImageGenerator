@@ -1,4 +1,4 @@
-package com.duoduo.User;
+package com.duoduo.config;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 
