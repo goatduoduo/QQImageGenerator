@@ -19,16 +19,20 @@ public class UserConfig {
     private String lastSelectedColor;
 
     /**
-     * 剩余资金
+     * 剩余资金 现在叫经验值了
      */
     @JSONField(name = "Lottery Cash", ordinal = 3)
     private Integer cash;
-
     /**
-     * 动态概率
+     * 储存一轮挖掘的所有普通矿物
      */
-    @JSONField(name = "Lottery Dynamic Percentage", ordinal = 4)
-    private Integer dynamicPercentage;
+    @JSONField(name = "Normal Mine Index")
+    private List<Integer> normalMineIndexList;
+    /**
+     * 储存一轮挖掘的所有稀有矿物
+     */
+    @JSONField(name = "Rare Mine Index")
+    private List<Integer> rareMineIndexList;
 
     /**
      * 所有物品的剩余数量
@@ -50,7 +54,6 @@ public class UserConfig {
     public UserConfig(String name) {
         this.name = name;
         this.cash = 100;
-        this.dynamicPercentage = 0;
         this.itemsLeft = new ArrayList<>(5);
         this.messages = new ArrayList<>(0);
         for (int i = 0; i < 5; i++) {
@@ -82,14 +85,6 @@ public class UserConfig {
         this.cash = cash;
     }
 
-    public Integer getDynamicPercentage() {
-        return dynamicPercentage;
-    }
-
-    public void setDynamicPercentage(Integer dynamicPercentage) {
-        this.dynamicPercentage = dynamicPercentage;
-    }
-
     public List<Integer> getItemsLeft() {
         return itemsLeft;
     }
@@ -99,6 +94,10 @@ public class UserConfig {
     }
 
     public List<String> getMessages() {
+        //自动清理过长消息
+        if (messages.size() > 10) {
+            messages.subList(0, messages.size() - 10).clear();
+        }
         return messages;
     }
 
@@ -106,4 +105,19 @@ public class UserConfig {
         this.messages = messages;
     }
 
+    public List<Integer> getNormalMineIndexList() {
+        return normalMineIndexList;
+    }
+
+    public void setNormalMineIndexList(List<Integer> normalMineIndexList) {
+        this.normalMineIndexList = normalMineIndexList;
+    }
+
+    public List<Integer> getRareMineIndexList() {
+        return rareMineIndexList;
+    }
+
+    public void setRareMineIndexList(List<Integer> rareMineIndexList) {
+        this.rareMineIndexList = rareMineIndexList;
+    }
 }

@@ -1,8 +1,11 @@
 package com.duoduo.component;
 
+import com.duoduo.bean.MinimalUser;
+import com.duoduo.config.MineConfig;
 import com.duoduo.util.random.RandomNumber;
 import com.duoduo.config.UserConfig;
 import com.duoduo.util.ConfigUtil;
+import com.duoduo.util.random.RandomUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,10 @@ import java.util.List;
  * @Date: Created in 2023/1/15 20:05
  */
 public class MiningIncCalculation {
+
+    private static MineConfig mineConfig = null;
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     /**
      * 无参数调用方法，所有玩家的数据储存在一个json里，公司和员工的关系是1：n，只有两层关系。
      * 所有人最初没有职业，随机5%成为老板，95%员工，而员工若无公司会随机加入一个，暂不考虑失业问题。
@@ -29,19 +36,29 @@ public class MiningIncCalculation {
 
     }
 
+
     /**
-     * 十连抽的玩法补充，每个人在挖矿前随机找1名受害者掠夺10%的财产
+     * 十连抽的玩法补充，每个人在挖矿前随机找1名受害者掠夺6%的经验值
+     * 经验值越高的玩家越有可能成为目标
      */
     public static void lootGameOn(List<String> users) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        mineConfig = ConfigUtil.readUserConfig("mine", "globe", MineConfig.class);
+        if (mineConfig == null) {
+            mineConfig = MineConfig.initialize();
+        }
+
         int size = users.size();
-        final float lootPercent = 0.1f;
+        final float lootPercent = 0.06f;
+        //将文件读入到随机数组中以启用随机指定玩家的功能
+        for (String e : users) {
+            RandomUser.userConfigs.add(ConfigUtil.readUserConfig(e, "users", UserConfig.class));
+        }
         for (int i = 0; i < size; i++) {
             int randInt = RandomNumber.getRandomInt(0, size - 1);
             //不允许掠夺自己，所以出现此情况会被跳过
             if (randInt != i) {
-                UserConfig looter = ConfigUtil.readUserConfig(users.get(i), UserConfig.class);
-                UserConfig victim = ConfigUtil.readUserConfig(users.get(randInt), UserConfig.class);
+                UserConfig looter = RandomUser.userConfigs.get(i);
+                UserConfig victim = RandomUser.userConfigs.get(randInt);
                 int looted = (int) (victim.getCash() * lootPercent);
                 //掠夺游戏开始
                 looter.setCash(looter.getCash() + looted);
@@ -55,11 +72,81 @@ public class MiningIncCalculation {
                 }
                 victim.getMessages().add(sdf.format(new Date()) + ": " + looter.getName() + "掠夺了你 " + looted + " 经验值;");
                 //掠夺结束了
-                ConfigUtil.writeConfig(users.get(i),looter);
-                ConfigUtil.writeConfig(users.get(randInt),victim);
+                ConfigUtil.writeConfig(users.get(i), "users", looter);
+                ConfigUtil.writeConfig(users.get(randInt), "users", victim);
 
                 System.out.println(looter.getName() + "掠夺了" + victim.getName() + looted + "经验值;");
             }
         }
+        RandomUser.sortUserByMostExp();
+        mineConfig.setUsers(new ArrayList<>());
+        for (UserConfig e : RandomUser.userConfigs) {
+            mineConfig.getUsers().add(new MinimalUser(e.getName(), e.getCash()));
+        }
+        ConfigUtil.writeConfig("mine", "globe", mineConfig);
+    }
+
+    /**
+     * 挖矿算法在此
+     *
+     * @param users
+     */
+    public static void mineGameOn(List<String> users) {
+        int rounds = 15;
+        //todo 打乱玩家顺序
+        //初始化以防null
+        mineConfig = ConfigUtil.readUserConfig("mine", "globe", MineConfig.class);
+        if (mineConfig == null) {
+            mineConfig = MineConfig.initialize();
+        }
+        mineConfig.initMine();
+        for (String e : users) {
+            UserConfig user = ConfigUtil.readUserConfig(e, "users", UserConfig.class);
+            if (user == null) {
+                user = new UserConfig(e);
+            }
+            //开始挖矿
+            user.setNormalMineIndexList(new ArrayList<>());
+            for (int j = 0; j < rounds; j++) {
+                //todo 1%的概率会出现稀有物品
+                int totalWeight = 0;
+                for (int i = 0; i < mineConfig.getItemsLeft().size(); i++) {
+                    totalWeight += mineConfig.getItemsLeft().get(i);
+                }
+                if (totalWeight == 0) {
+                    break;
+                }
+                //加权随机算法
+                int rand = RandomNumber.getRandomInt(1, totalWeight);
+                for (int i = 0; i < mineConfig.getItemsLeft().size(); i++) {
+                    if (mineConfig.getItemsLeft().get(i) == 0) {
+                        continue;
+                    }
+                    rand -= mineConfig.getItemsLeft().get(i);
+                    if (rand <= 0) {
+                        user.getNormalMineIndexList().add(i);
+                        //此时抽中后将会从奖池里拿出，这是最大的不同点
+                        mineConfig.getItemsLeft().set(i, mineConfig.getItemsLeft().get(i) - 1);
+                        break;
+                    }
+                }
+            }
+            //将用户采集到的矿物从高到低排序
+            user.getNormalMineIndexList().sort((o1, o2) -> {
+                if (o1 > o2) {
+                    return -1;
+                } else if (o1 < o2) {
+                    return 1;
+                }
+                return 0;
+            });
+            //真是倒霉鬼，最后一个挖完矿物的要去重置了
+            if (mineConfig.initMine()) {
+                user.setCash(user.getCash() - 1000);
+                user.getMessages().add(sdf.format(new Date()) + ": " + "你重置矿脉消耗了1000经验值");
+            }
+            ConfigUtil.writeConfig(e,"users",user);
+        }
+        ConfigUtil.writeConfig("mine", "globe",mineConfig);
     }
 }

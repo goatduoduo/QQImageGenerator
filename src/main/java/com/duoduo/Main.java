@@ -23,6 +23,7 @@ public class Main {
         //测试环境 ?:\...\QQImageGenerator
         //生产环境 ?:\...\QQImageGenerator\out\artifacts\QQImageGenerator_jar
         //指令为两个参数，1是随机类型 2是用户名字
+        List<String> users = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
         if(args.length >= 2 ){
             switch (args[0]){
                 case "rc":
@@ -32,8 +33,11 @@ public class Main {
                     new TenRoundsComponent(args[1]). render();
                     break;
                 case "lootMine":
-                    List<String> users = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
                     MiningIncCalculation.lootGameOn(users);
+                    break;
+                case "mineOn":
+                    MiningIncCalculation.mineGameOn(users);
+                    break;
                 default:break;
             }
         }else{

@@ -22,13 +22,14 @@ public class ConfigUtil {
 
     /**
      * 打开json文件并读取到对象中
+     *
      * @param fileName 文件名字，自动加上 .json
-     * @param classz 类名，例如UserConfig.class
-     * @param <T> 泛型
+     * @param classz   类名，例如UserConfig.class
+     * @param <T>      泛型
      * @return 读取的对象
      */
-    public static <T> T readUserConfig(String fileName, Class<T> classz)  {
-        String filePath =  CONFIG_FILE_PATH + fileName + ".json";
+    public static <T> T readUserConfig(String fileName, Class<T> classz) {
+        String filePath = CONFIG_FILE_PATH + fileName + ".json";
         T ans = null;
         try {
             InputStream is = new FileInputStream(filePath);
@@ -57,16 +58,17 @@ public class ConfigUtil {
 
     /**
      * 将对象写入到json文件中
+     *
      * @param fileName 文件名字，自动加上 .json
-     * @param content 类名，例如UserConfig.class
-     * @param <T> 泛型
+     * @param content  类名，例如UserConfig.class
+     * @param <T>      泛型
      */
-    public static <T> void writeConfig(String fileName,T content){
+    public static <T> void writeConfig(String fileName, T content) {
         File file = new File(CONFIG_FILE_PATH + fileName + ".json");
         OutputStream out = null;
         BufferedWriter bw = null;
 
-        if(file.exists()){
+        if (file.exists()) {
             try {
                 out = Files.newOutputStream(file.toPath());
                 bw = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
@@ -77,8 +79,20 @@ public class ConfigUtil {
                 throw new RuntimeException(e);
             }
 
-        }else{
+        } else {
             System.out.println(CONFIG_FILE_PATH + fileName + ".json" + "不存在！");
         }
+    }
+
+    public static <T> T readUserConfig(String fileName, String directory, Class<T> classz) {
+        File folder =  new File(CONFIG_FILE_PATH+"\\" + directory) ;
+        folder.mkdir();
+        return readUserConfig(directory + "\\" + fileName, classz);
+    }
+
+    public static <T> void writeConfig(String fileName, String directory, T content) {
+        File folder =  new File(CONFIG_FILE_PATH+"\\" + directory) ;
+        folder.mkdir();
+        writeConfig(directory + "\\" + fileName, content);
     }
 }
