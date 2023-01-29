@@ -5,6 +5,7 @@ import com.duoduo.config.MineConfig;
 import com.duoduo.util.random.RandomNumber;
 import com.duoduo.config.UserConfig;
 import com.duoduo.util.ConfigUtil;
+import com.duoduo.util.random.RandomPercent;
 import com.duoduo.util.random.RandomUser;
 
 import java.text.SimpleDateFormat;
@@ -92,14 +93,29 @@ public class MiningIncCalculation {
      * @param users
      */
     public static void mineGameOn(List<String> users) {
+        //一名玩家的挖矿数量
         int rounds = 15;
-        //todo 打乱玩家顺序
+        //重置矿脉的费用
+        int resetCost = 2000;
+        //洗牌算法打乱玩家顺序
+        for (int i = 0; i < users.size(); i++) {
+            int userA = RandomNumber.getRandomInt(0, users.size() - 1);
+            int userB = RandomNumber.getRandomInt(0, users.size() - 1);
+            if (userA != userB) {
+                String temp = users.get(userB);
+                users.set(userB, users.get(userA));
+                users.set(userA, temp);
+            }
+        }
         //初始化以防null
         mineConfig = ConfigUtil.readUserConfig("mine", "globe", MineConfig.class);
         if (mineConfig == null) {
             mineConfig = MineConfig.initialize();
         }
         mineConfig.initMine();
+        //全局信息每一次运行都会被重置，因为之后，每个玩家在生成图片时都会把这些信息插入其中
+        mineConfig.setGlobalMessages(new ArrayList<>());
+
         for (String e : users) {
             UserConfig user = ConfigUtil.readUserConfig(e, "users", UserConfig.class);
             if (user == null) {
@@ -109,6 +125,11 @@ public class MiningIncCalculation {
             user.setNormalMineIndexList(new ArrayList<>());
             for (int j = 0; j < rounds; j++) {
                 //todo 1%的概率会出现稀有物品
+                if(RandomPercent.randomTrue(1)){
+                    mineConfig.getGlobalMessages().add(sdf.format(new Date()) + ": " + user.getName() + "真的幸运极了，抽中了"+""+"稀有物品——暴雪绿茶");
+                    System.out.println(user.getName() + "真的幸运极了，抽中了"+""+"稀有物品——暴雪绿茶");
+                }
+                //平平无奇的抽奖流程
                 int totalWeight = 0;
                 for (int i = 0; i < mineConfig.getItemsLeft().size(); i++) {
                     totalWeight += mineConfig.getItemsLeft().get(i);
@@ -142,11 +163,13 @@ public class MiningIncCalculation {
             });
             //真是倒霉鬼，最后一个挖完矿物的要去重置了
             if (mineConfig.initMine()) {
-                user.setCash(user.getCash() - 1000);
-                user.getMessages().add(sdf.format(new Date()) + ": " + "你重置矿脉消耗了1000经验值");
+                user.setCash(user.getCash() - resetCost);
+                mineConfig.getGlobalMessages().add(sdf.format(new Date()) + ": " + user.getName() + "真是个倒霉鬼，花费了"+resetCost+"经验值重置矿脉");
+                System.out.println(user.getName() + "真是个倒霉鬼，花费了"+resetCost+"经验值重置矿脉");
             }
-            ConfigUtil.writeConfig(e,"users",user);
+            ConfigUtil.writeConfig(e, "users", user);
         }
-        ConfigUtil.writeConfig("mine", "globe",mineConfig);
+        ConfigUtil.writeConfig("mine", "globe", mineConfig);
+        System.out.println("采矿游戏结束");
     }
 }

@@ -10,6 +10,12 @@ import java.util.Random;
 public class RandomNumber {
     static Random random= new Random();
 
+    /**
+     * 生成[lb,rb]的随机数
+     * @param lbound
+     * @param rbound
+     * @return
+     */
     public static int getRandomInt(int lbound,int rbound){
         int temp = random.nextInt();
         if(temp < 0){

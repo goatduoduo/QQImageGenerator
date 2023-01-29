@@ -95,7 +95,7 @@ public class UserConfig {
 
     public List<String> getMessages() {
         //自动清理过长消息
-        if (messages.size() > 10) {
+        if (messages.size() > 20) {
             messages.subList(0, messages.size() - 10).clear();
         }
         return messages;

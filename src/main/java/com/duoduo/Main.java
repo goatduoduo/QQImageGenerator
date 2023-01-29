@@ -26,10 +26,10 @@ public class Main {
         List<String> users = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
         if(args.length >= 2 ){
             switch (args[0]){
-                case "rc":
+                case "randomColor":
                     new RandomColorComponent(args[1]).render();
                     break;
-                case "tr":
+                case "mineResult":
                     new TenRoundsComponent(args[1]). render();
                     break;
                 case "lootMine":

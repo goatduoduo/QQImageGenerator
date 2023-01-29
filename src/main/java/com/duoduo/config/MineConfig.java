@@ -25,6 +25,12 @@ public class MineConfig {
     @JSONField(name = "Users")
     private List<MinimalUser> users;
 
+    /**
+     * 全局相关的用户信息，一般会直接加入个人信息进去
+     */
+    @JSONField(name = "Messages")
+    private List<String> globalMessages;
+
 
     public List<Integer> getItemsLeft() {
         return itemsLeft;
@@ -42,6 +48,13 @@ public class MineConfig {
         this.users = users;
     }
 
+    public List<String> getGlobalMessages() {
+        return globalMessages;
+    }
+
+    public void setGlobalMessages(List<String> globalMessages) {
+        this.globalMessages = globalMessages;
+    }
 
     /**
      * 如果为null则生成一个默认的config
@@ -65,18 +78,18 @@ public class MineConfig {
     public boolean initMine() {
         //无量在4号位置
         boolean needReset = true;
-        try{
+        try {
             needReset = itemsLeft.get(4) <= 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("矿脉信息未初始化");
         }
-        if(needReset){
+        if (needReset) {
             itemsLeft = new ArrayList<>(5);
-            itemsLeft.add(RandomNumber.getRandomInt(1200,1400));
-            itemsLeft.add(RandomNumber.getRandomInt(800,1000));
-            itemsLeft.add(RandomNumber.getRandomInt(500,600));
-            itemsLeft.add(RandomNumber.getRandomInt(140,200));
-            itemsLeft.add(RandomNumber.getRandomInt(50,75));
+            itemsLeft.add(RandomNumber.getRandomInt(1200, 1400));
+            itemsLeft.add(RandomNumber.getRandomInt(800, 1000));
+            itemsLeft.add(RandomNumber.getRandomInt(500, 600));
+            itemsLeft.add(RandomNumber.getRandomInt(140, 200));
+            itemsLeft.add(RandomNumber.getRandomInt(50, 75));
         }
         return needReset;
     }

@@ -47,24 +47,28 @@ public class TenRoundsComponent extends BackgroundEntity {
 
         mineConfig = ConfigUtil.readUserConfig("mine", "globe", MineConfig.class);
 
+        for (String e : mineConfig.getGlobalMessages()) {
+            user.getMessages().add(e);
+        }
+
         initValue();
 
         long start = System.currentTimeMillis();
         int columns = 5;
         int rows = 3;
-        int maxMessage = 5;
+        int maxMessage = 10;
 
         setBackgroundColor(new Color(246, 246, 246));
         setWidth(640);
-        setHeight(440);
+        setHeight(545);
         init();
-
+        //显示挖矿结果
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 getRound(20 + 80 * j, 76 + 74 * i, i * columns + j);
             }
         }
-
+        //显示信息
         for (int i = 0; i < maxMessage; i++) {
             if (user.getMessages().size() - i - 1 >= 0) {
                 getMessage(20, 310 + 22 * i, user.getMessages().size() - i - 1);
@@ -112,7 +116,7 @@ public class TenRoundsComponent extends BackgroundEntity {
     private void getMessage(int x, int y, int index) {
         TextEntity textTitle = new TextEntity();
         textTitle.setTextContent(user.getMessages().get(index));
-        textTitle.setFontSize(14.0f);
+        textTitle.setFontSize(12.0f);
         textTitle.setX(x + 0f);
         textTitle.setY(y + 0f);
         textTitle.setFontColor(new Color(173, 173, 173, 202));
@@ -183,7 +187,7 @@ public class TenRoundsComponent extends BackgroundEntity {
             getChildren().add(textTitle);
             getChildren().add(polygonEntity);
         }
-
+        //排行榜模块
         TextEntity rankingTitle = new TextEntity();
         rankingTitle.setTextContent("排行榜");
         rankingTitle.setFontStyle(1);
@@ -194,25 +198,35 @@ public class TenRoundsComponent extends BackgroundEntity {
         rankingTitle.setFontSize(16);
         for (int i = 0; i < mineConfig.getUsers().size() && i < 5; i++) {
             TextEntity textTitle = new TextEntity();
-            textTitle.setTextContent("#"+(i+1)+" "+mineConfig.getUsers().get(i).getUserName()+"    Exp:"+mineConfig.getUsers().get(i).getExp());
+            LevelBean temp = new LevelBean(mineConfig.getUsers().get(i).getExp());
+            textTitle.setTextContent("#" + (i + 1) + " " + mineConfig.getUsers().get(i).getUserName());
             textTitle.setFontSize(12.0f);
             textTitle.setX(440f);
             textTitle.setY((float) 186 + i * 16);
             textTitle.setFontColor(new Color(138, 138, 138));
-            textTitle.setContentWidth(280);
+            textTitle.setContentWidth(360);
+
+            TextEntity expTitle = new TextEntity();
+            expTitle.setTextContent( "Lvl:" + temp.getCurLevel() + " Exp:" + temp.getCurExp());
+            expTitle.setFontSize(12.0f);
+            expTitle.setX(514f);
+            expTitle.setY((float) 186 + i * 16);
+            expTitle.setFontColor(new Color(138, 138, 138));
+            expTitle.setContentWidth(360);
 
             getChildren().add(textTitle);
+            getChildren().add(expTitle);
         }
 
         int userRankIndex = 0;
-        for(int i=0;i<mineConfig.getUsers().size();i++){
-            if(Objects.equals(mineConfig.getUsers().get(i).getUserName(), user.getName())){
-                userRankIndex = i+1;
+        for (int i = 0; i < mineConfig.getUsers().size(); i++) {
+            if (Objects.equals(mineConfig.getUsers().get(i).getUserName(), user.getName())) {
+                userRankIndex = i + 1;
                 break;
             }
         }
         TextEntity rankCurrent = new TextEntity();
-        rankCurrent.setTextContent("你的位置："+userRankIndex+"/"+mineConfig.getUsers().size());
+        rankCurrent.setTextContent("你的位置：" + userRankIndex + "/" + mineConfig.getUsers().size());
         rankCurrent.setFontColor(new Color(126, 126, 126, 144));
         rankCurrent.setX(440f);
         rankCurrent.setY(280f);

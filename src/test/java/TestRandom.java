@@ -1,4 +1,6 @@
 import com.duoduo.util.random.RandomColor;
+import com.duoduo.util.random.RandomNumber;
+import com.duoduo.util.random.RandomPercent;
 import org.junit.Test;
 
 /**
@@ -21,6 +23,15 @@ public class TestRandom {
     public void getCsv(){
         RandomColor randomColor=new RandomColor();
         randomColor.test();
+    }
+
+    @Test
+    public void testOnePercent(){
+        for(int i=0;i<1000;i++){
+            if(RandomPercent.randomTrue(1)){
+                System.out.println("幸运啊");
+            }
+        }
     }
 
 }
