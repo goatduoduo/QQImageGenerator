@@ -2,7 +2,6 @@ package com.duoduo.component;
 
 import com.duoduo.bean.*;
 import com.duoduo.config.MineConfig;
-import com.duoduo.util.random.RandomNumber;
 import com.duoduo.config.UserConfig;
 import com.duoduo.util.ConfigUtil;
 import com.duoduo.component.entity.BackgroundEntity;
@@ -31,13 +30,18 @@ public class TenRoundsComponent extends BackgroundEntity {
 
     LevelBean levelBean = null;
 
+    /**
+     * 用于控制奖励倍率的工具，比如限时活动奖励翻倍等等
+     */
+    private static final float RATIO = 0.5f;
+
     public TenRoundsComponent(String userName) {
         //既然公用矿脉，那么weight不再被需要了
-        rewardBeans.add(new RewardBean(1, 4, new Color(74, 174, 82), "标量", "/images/infinitode/Resource-Scalar.png"));
-        rewardBeans.add(new RewardBean(1, 9, new Color(90, 105, 198), "矢量", "/images/infinitode/Resource-Vector.png"));
-        rewardBeans.add(new RewardBean(1, 16, new Color(173, 69, 189), "矩阵", "/images/infinitode/Resource-Matrix.png"));
-        rewardBeans.add(new RewardBean(1, 36, new Color(251, 154, 3), "张量", "/images/infinitode/Resource-Tensor.png"));
-        rewardBeans.add(new RewardBean(1, 72, new Color(4, 190, 217), "无量", "/images/infinitode/Resource-Infiar.png"));
+        rewardBeans.add(new RewardBean(1, (int)(4* RATIO), new Color(74, 174, 82), "标量", "/images/infinitode/Resource-Scalar.png"));
+        rewardBeans.add(new RewardBean(1, (int)(9* RATIO), new Color(90, 105, 198), "矢量", "/images/infinitode/Resource-Vector.png"));
+        rewardBeans.add(new RewardBean(1, (int)(16* RATIO), new Color(173, 69, 189), "矩阵", "/images/infinitode/Resource-Matrix.png"));
+        rewardBeans.add(new RewardBean(1, (int)(36* RATIO), new Color(251, 154, 3), "张量", "/images/infinitode/Resource-Tensor.png"));
+        rewardBeans.add(new RewardBean(1, (int)(72* RATIO), new Color(4, 190, 217), "无量", "/images/infinitode/Resource-Infiar.png"));
 
         user = ConfigUtil.readUserConfig(userName, "users", UserConfig.class);
         if (user == null) {
@@ -166,6 +170,7 @@ public class TenRoundsComponent extends BackgroundEntity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         user.getMessages().add(sdf.format(new Date()) + ": 你通过采矿获得了" + totalWeight + " 经验值;");
+        user.setCash(user.getCash() + totalWeight);
 
         for (RewardBean rewardBean : rewardBeans) {
             totalWeight += rewardBean.getWeight();

@@ -124,10 +124,10 @@ public class MiningIncCalculation {
             //开始挖矿
             user.setNormalMineIndexList(new ArrayList<>());
             for (int j = 0; j < rounds; j++) {
-                //todo 1%的概率会出现稀有物品
-                if(RandomPercent.randomTrue(1)){
-                    mineConfig.getGlobalMessages().add(sdf.format(new Date()) + ": " + user.getName() + "真的幸运极了，抽中了"+""+"稀有物品——暴雪绿茶");
-                    System.out.println(user.getName() + "真的幸运极了，抽中了"+""+"稀有物品——暴雪绿茶");
+                //1/300抽命中稀有物品
+                if(RandomPercent.randomTrueDenominator(300)){
+                    mineConfig.getGlobalMessages().add(sdf.format(new Date()) + ": " + user.getName() + "真的幸运极了，抽中了"+""+"稀有物品——九转大肠");
+                    System.out.println(user.getName() + "真的幸运极了，抽中了"+""+"稀有物品");
                 }
                 //平平无奇的抽奖流程
                 int totalWeight = 0;

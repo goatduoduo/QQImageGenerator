@@ -13,8 +13,8 @@ import java.util.List;
  * Created Date: 2023/1/17 15:52
  **/
 public class LevelBean {
-    List<Integer> expList = null;
-    List<Float> miningRatio = null;
+    static List<Integer> expList = null;
+    static List<Float> miningRatio = null;
 
     int curLevel = 0;
     int curExp = 0;

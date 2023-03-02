@@ -85,11 +85,11 @@ public class MineConfig {
         }
         if (needReset) {
             itemsLeft = new ArrayList<>(5);
-            itemsLeft.add(RandomNumber.getRandomInt(1200, 1400));
-            itemsLeft.add(RandomNumber.getRandomInt(800, 1000));
-            itemsLeft.add(RandomNumber.getRandomInt(500, 600));
-            itemsLeft.add(RandomNumber.getRandomInt(140, 200));
-            itemsLeft.add(RandomNumber.getRandomInt(50, 75));
+            itemsLeft.add(RandomNumber.getRandomInt(100, 200));
+            itemsLeft.add(RandomNumber.getRandomInt(80, 100));
+            itemsLeft.add(RandomNumber.getRandomInt(10, 12));
+            itemsLeft.add(RandomNumber.getRandomInt(5, 6));
+            itemsLeft.add(RandomNumber.getRandomInt(2, 3));
         }
         return needReset;
     }
