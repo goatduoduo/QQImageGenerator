@@ -44,13 +44,16 @@ public class LevelBean {
         updateCurrentLevel(totalExp);
     }
 
+    public LevelBean() {
+        initLevelCsv();
+    }
+
     /**
      * 更新用户等级信息
      *  level从1开始，但是数组从0开始
      * @param totalExp 总经验值
      */
     public void updateCurrentLevel(int totalExp) {
-        initLevelCsv();
         for (int i = 0; i < expList.size(); i++) {
             if (totalExp < expList.get(i)) {
                 curLevel = i + 1;

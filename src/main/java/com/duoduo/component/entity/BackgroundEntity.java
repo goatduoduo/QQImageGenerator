@@ -3,8 +3,11 @@ package com.duoduo.component.entity;
 import cn.hutool.core.util.ObjectUtil;
 import com.duoduo.bean.TransferableImage;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +92,7 @@ public class BackgroundEntity {
         this.backgroundImg = backgroundImg;
     }
 
-    public void render() {
-        long start = System.currentTimeMillis();
+    public BufferedImage render() {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d;
         g2d = getG2d(bufferedImage);
@@ -115,10 +117,22 @@ public class BackgroundEntity {
         }
         g2d.dispose();
 
-        System.out.println("渲染用时："+(System.currentTimeMillis()-start)+"ms");
-        start = System.currentTimeMillis();
-        //将图片送入剪贴板
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new TransferableImage(bufferedImage),null);
-        System.out.println("送入剪贴板用时："+(System.currentTimeMillis()-start)+"ms");
+        //返回图片，之后将可以保存
+        return bufferedImage;
+    }
+
+    public void saveImage(BufferedImage image, String path){
+        try {
+            // 从文件读取一张图片
+            BufferedImage bufferedImage = image;
+
+            // 将图片保存到指定位置
+            File output = new File(path);
+            ImageIO.write(bufferedImage, "jpg", output);
+
+            System.out.println("Image saved to " + output.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

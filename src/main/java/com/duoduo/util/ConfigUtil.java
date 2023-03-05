@@ -17,8 +17,10 @@ public class ConfigUtil {
 
     /**
      * 配置文件的路径
+     * 测试环境 ?:\...\QQImageGenerator
+     * 生产环境 ?:\...\QQImageGenerator\out\artifacts\QQImageGenerator_jar
      */
-    private static String CONFIG_FILE_PATH = System.getProperty("user.dir") + "\\";
+    public static final String CONFIG_FILE_PATH = System.getProperty("user.dir") + "\\";
 
     /**
      * 打开json文件并读取到对象中
@@ -85,13 +87,21 @@ public class ConfigUtil {
     }
 
     public static <T> T readUserConfig(String fileName, String directory, Class<T> classz) {
-        File folder =  new File(CONFIG_FILE_PATH+"\\" + directory) ;
+        File folder = new File(CONFIG_FILE_PATH + "\\" + directory);
         folder.mkdir();
         return readUserConfig(directory + "\\" + fileName, classz);
     }
 
+    /**
+     * 将对象写入到json文件中
+     *
+     * @param fileName 文件名字，自动加上 .json
+     * @param content  类名，例如UserConfig.class
+     * @param <T>      泛型
+     * @param directory 文件夹
+     */
     public static <T> void writeConfig(String fileName, String directory, T content) {
-        File folder =  new File(CONFIG_FILE_PATH+"\\" + directory) ;
+        File folder = new File(CONFIG_FILE_PATH + "\\" + directory);
         folder.mkdir();
         writeConfig(directory + "\\" + fileName, content);
     }

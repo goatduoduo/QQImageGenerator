@@ -15,6 +15,9 @@ public class UserConfig {
     @JSONField(name = "USER NAME", ordinal = 1)
     private String name;
 
+    @JSONField(name = "QQ")
+    private String qq;
+
     @JSONField(name = "LAST SELECTED COLOR", ordinal = 2)
     private String lastSelectedColor;
 
@@ -22,7 +25,7 @@ public class UserConfig {
      * 剩余资金 现在叫经验值了
      */
     @JSONField(name = "Lottery Cash", ordinal = 3)
-    private Integer cash;
+    private Integer experience;
     /**
      * 储存一轮挖掘的所有普通矿物
      */
@@ -32,13 +35,7 @@ public class UserConfig {
      * 储存一轮挖掘的所有稀有矿物
      */
     @JSONField(name = "Rare Mine Index")
-    private List<Integer> rareMineIndexList;
-
-    /**
-     * 所有物品的剩余数量
-     */
-    @JSONField(name = "Lottery Items Left", ordinal = 5)
-    private List<Integer> itemsLeft;
+    private List<String> rareMineIndexList;
 
     /**
      * 消息列表
@@ -46,19 +43,19 @@ public class UserConfig {
     @JSONField(name = "Messages", ordinal = 6)
     private List<String> messages;
 
-    public UserConfig(String name, String lastSelectedColor) {
+    public UserConfig(String name, String qq) {
         this.name = name;
-        this.lastSelectedColor = lastSelectedColor;
+        this.qq = qq;
+        this.experience = 2000;
+        this.normalMineIndexList = new ArrayList<>();
+        this.rareMineIndexList = new ArrayList<>();
+        this.messages = new ArrayList<>();
     }
 
     public UserConfig(String name) {
         this.name = name;
-        this.cash = 100;
-        this.itemsLeft = new ArrayList<>(5);
+        this.experience = 100;
         this.messages = new ArrayList<>(0);
-        for (int i = 0; i < 5; i++) {
-            this.itemsLeft.add(0);
-        }
     }
 
     public String getName() {
@@ -77,20 +74,22 @@ public class UserConfig {
         this.lastSelectedColor = lastSelectedColor;
     }
 
-    public Integer getCash() {
-        return cash;
+    public Integer getExperience() {
+        return experience;
     }
 
-    public void setCash(Integer cash) {
-        this.cash = cash;
+    public void setExperience(Integer experience) {
+        this.experience = experience;
+    }
+    public UserConfig() {
     }
 
-    public List<Integer> getItemsLeft() {
-        return itemsLeft;
+    public String getQq() {
+        return qq;
     }
 
-    public void setItemsLeft(List<Integer> itemsLeft) {
-        this.itemsLeft = itemsLeft;
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     public List<String> getMessages() {
@@ -113,11 +112,11 @@ public class UserConfig {
         this.normalMineIndexList = normalMineIndexList;
     }
 
-    public List<Integer> getRareMineIndexList() {
+    public List<String> getRareMineIndexList() {
         return rareMineIndexList;
     }
 
-    public void setRareMineIndexList(List<Integer> rareMineIndexList) {
+    public void setRareMineIndexList(List<String> rareMineIndexList) {
         this.rareMineIndexList = rareMineIndexList;
     }
 }

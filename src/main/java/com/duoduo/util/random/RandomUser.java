@@ -3,7 +3,6 @@ package com.duoduo.util.random;
 import com.duoduo.config.UserConfig;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,11 +22,11 @@ public class RandomUser {
     public static UserConfig randomUserByMostExp() {
         int totalWeight = 0;
         for (UserConfig e : userConfigs) {
-            totalWeight += e.getCash();
+            totalWeight += e.getExperience();
         }
         int rand = RandomNumber.getRandomInt(1, totalWeight);
         for (UserConfig e : userConfigs) {
-            rand -= e.getCash();
+            rand -= e.getExperience();
             if (rand <= 0) {
                 return e;
             }
@@ -38,14 +37,22 @@ public class RandomUser {
     /**
      * 根据最高经验值进行排序
      */
-    public static void sortUserByMostExp() {
+    public static void sortUserByMostExp(List<UserConfig> userConfigs) {
         userConfigs.sort((o1, o2) -> {
-            if (o1.getCash() > o2.getCash()) {
+            if (o1.getExperience() > o2.getExperience()) {
                 return -1;
-            } else if (o1.getCash() < o2.getCash()) {
+            } else if (o1.getExperience() < o2.getExperience()) {
                 return 1;
             }
             return 0;
         });
+    }
+
+    /**
+     * 按照名字进行排序，这是默认规则
+     * @param userConfigs
+     */
+    public static void sortUserByDefault(List<UserConfig> userConfigs){
+        userConfigs.sort(Comparator.comparing(UserConfig::getName));
     }
 }

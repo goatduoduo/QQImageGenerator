@@ -1,7 +1,7 @@
 package com.duoduo.component;
 
 import com.duoduo.bean.*;
-import com.duoduo.config.MineConfig;
+import com.duoduo.config.GlobalConfig;
 import com.duoduo.config.UserConfig;
 import com.duoduo.util.ConfigUtil;
 import com.duoduo.component.entity.BackgroundEntity;
@@ -23,35 +23,29 @@ import java.util.List;
 public class TenRoundsComponent extends BackgroundEntity {
 
     private List<RewardBean> rewardBeans = new ArrayList<>();
-
-    private UserConfig user = null;
-
-    private MineConfig mineConfig = null;
-
     LevelBean levelBean = null;
 
     /**
      * 用于控制奖励倍率的工具，比如限时活动奖励翻倍等等
      */
-    private static final float RATIO = 0.5f;
+    private static final float RATIO = 1.0f;
 
-    public TenRoundsComponent(String userName) {
+    private final UserConfig user;
+    private final GlobalConfig global;
+
+    public TenRoundsComponent(UserConfig user,GlobalConfig global) {
+        this.user = user;
+        this.global = global;
         //既然公用矿脉，那么weight不再被需要了
-        rewardBeans.add(new RewardBean(1, (int)(4* RATIO), new Color(74, 174, 82), "标量", "/images/infinitode/Resource-Scalar.png"));
-        rewardBeans.add(new RewardBean(1, (int)(9* RATIO), new Color(90, 105, 198), "矢量", "/images/infinitode/Resource-Vector.png"));
-        rewardBeans.add(new RewardBean(1, (int)(16* RATIO), new Color(173, 69, 189), "矩阵", "/images/infinitode/Resource-Matrix.png"));
-        rewardBeans.add(new RewardBean(1, (int)(36* RATIO), new Color(251, 154, 3), "张量", "/images/infinitode/Resource-Tensor.png"));
-        rewardBeans.add(new RewardBean(1, (int)(72* RATIO), new Color(4, 190, 217), "无量", "/images/infinitode/Resource-Infiar.png"));
+        rewardBeans.add(new RewardBean(1, (int) (4 * RATIO), new Color(74, 174, 82), "标量", "/images/infinitode/Resource-Scalar.png"));
+        rewardBeans.add(new RewardBean(1, (int) (9 * RATIO), new Color(90, 105, 198), "矢量", "/images/infinitode/Resource-Vector.png"));
+        rewardBeans.add(new RewardBean(1, (int) (16 * RATIO), new Color(173, 69, 189), "矩阵", "/images/infinitode/Resource-Matrix.png"));
+        rewardBeans.add(new RewardBean(1, (int) (36 * RATIO), new Color(251, 154, 3), "张量", "/images/infinitode/Resource-Tensor.png"));
+        rewardBeans.add(new RewardBean(1, (int) (72 * RATIO), new Color(4, 190, 217), "无量", "/images/infinitode/Resource-Infiar.png"));
 
-        user = ConfigUtil.readUserConfig(userName, "users", UserConfig.class);
-        if (user == null) {
-            user = new UserConfig(userName);
-        }
-        levelBean = new LevelBean(user.getCash());
+        levelBean = new LevelBean(user.getExperience());
 
-        mineConfig = ConfigUtil.readUserConfig("mine", "globe", MineConfig.class);
-
-        for (String e : mineConfig.getGlobalMessages()) {
+        for (String e : global.getGlobalMessages()) {
             user.getMessages().add(e);
         }
 
@@ -69,20 +63,17 @@ public class TenRoundsComponent extends BackgroundEntity {
         //显示挖矿结果
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                getRound(20 + 80 * j, 76 + 74 * i, i * columns + j);
+                getRound(user, 20 + 80 * j, 76 + 74 * i, i * columns + j);
             }
         }
         //显示信息
         for (int i = 0; i < maxMessage; i++) {
             if (user.getMessages().size() - i - 1 >= 0) {
-                getMessage(20, 310 + 22 * i, user.getMessages().size() - i - 1);
+                getMessage(user, 20, 310 + 22 * i, user.getMessages().size() - i - 1);
             }
         }
 
-        getFinalCash();
-
-        ConfigUtil.writeConfig(userName, "users", user);
-        System.out.println("十连抽 生成用时:" + (System.currentTimeMillis() - start) + "ms");
+        getFinalCash(user);
     }
 
     /**
@@ -101,7 +92,7 @@ public class TenRoundsComponent extends BackgroundEntity {
      * @param x
      * @param y
      */
-    private void getRound(int x, int y, int index) {
+    private void getRound(UserConfig user, int x, int y, int index) {
         if (user.getNormalMineIndexList().size() <= index) {
             return;
         }
@@ -117,7 +108,7 @@ public class TenRoundsComponent extends BackgroundEntity {
      * @param y
      * @param index
      */
-    private void getMessage(int x, int y, int index) {
+    private void getMessage(UserConfig user, int x, int y, int index) {
         TextEntity textTitle = new TextEntity();
         textTitle.setTextContent(user.getMessages().get(index));
         textTitle.setFontSize(12.0f);
@@ -128,8 +119,8 @@ public class TenRoundsComponent extends BackgroundEntity {
         getChildren().add(textTitle);
     }
 
-    private void getFinalCash() {
-        levelBean.updateCurrentLevel(user.getCash());
+    private void getFinalCash(UserConfig user) {
+        levelBean.updateCurrentLevel(user.getExperience());
         TextEntity textTitle = new TextEntity();
         textTitle.setTextContent(user.getName() + " Lvl:" + levelBean.getCurLevel() + " Exp:"
                 + levelBean.getCurExp() + " / " + levelBean.getCurExpRequired());
@@ -170,7 +161,7 @@ public class TenRoundsComponent extends BackgroundEntity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         user.getMessages().add(sdf.format(new Date()) + ": 你通过采矿获得了" + totalWeight + " 经验值;");
-        user.setCash(user.getCash() + totalWeight);
+        user.setExperience(user.getExperience() + totalWeight);
 
         for (RewardBean rewardBean : rewardBeans) {
             totalWeight += rewardBean.getWeight();
@@ -178,7 +169,7 @@ public class TenRoundsComponent extends BackgroundEntity {
         //显示矿物价值和数量
         for (int i = 0; i < rewardBeans.size(); i++) {
             TextEntity textTitle = new TextEntity();
-            textTitle.setTextContent(rewardBeans.get(i).getTitle() + " 价值:" + rewardBeans.get(i).getCash() + " 剩余:" + mineConfig.getItemsLeft().get(i));
+            textTitle.setTextContent(rewardBeans.get(i).getTitle() + " 价值:" + rewardBeans.get(i).getCash() + " 剩余:" + global.getItemsLeft().get(i));
             textTitle.setFontSize(12.0f);
             textTitle.setX(456f);
             textTitle.setY((float) basePercentY + i * 16);
@@ -201,10 +192,10 @@ public class TenRoundsComponent extends BackgroundEntity {
         rankingTitle.setY(160f);
         rankingTitle.setFontColor(new Color(126, 126, 126, 144));
         rankingTitle.setFontSize(16);
-        for (int i = 0; i < mineConfig.getUsers().size() && i < 5; i++) {
+        for (int i = 0; i < global.getUserRank().size() && i < 5; i++) {
             TextEntity textTitle = new TextEntity();
-            LevelBean temp = new LevelBean(mineConfig.getUsers().get(i).getExp());
-            textTitle.setTextContent("#" + (i + 1) + " " + mineConfig.getUsers().get(i).getUserName());
+            LevelBean temp = new LevelBean(global.getUserRank().get(i).getExp());
+            textTitle.setTextContent("#" + (i + 1) + " " + global.getUserRank().get(i).getUserName());
             textTitle.setFontSize(12.0f);
             textTitle.setX(440f);
             textTitle.setY((float) 186 + i * 16);
@@ -212,7 +203,7 @@ public class TenRoundsComponent extends BackgroundEntity {
             textTitle.setContentWidth(360);
 
             TextEntity expTitle = new TextEntity();
-            expTitle.setTextContent( "Lvl:" + temp.getCurLevel() + " Exp:" + temp.getCurExp());
+            expTitle.setTextContent("Lvl:" + temp.getCurLevel() + " Exp:" + temp.getCurExp());
             expTitle.setFontSize(12.0f);
             expTitle.setX(514f);
             expTitle.setY((float) 186 + i * 16);
@@ -224,14 +215,14 @@ public class TenRoundsComponent extends BackgroundEntity {
         }
 
         int userRankIndex = 0;
-        for (int i = 0; i < mineConfig.getUsers().size(); i++) {
-            if (Objects.equals(mineConfig.getUsers().get(i).getUserName(), user.getName())) {
+        for (int i = 0; i < global.getUserRank().size(); i++) {
+            if (Objects.equals(global.getUserRank().get(i).getUserName(), user.getName())) {
                 userRankIndex = i + 1;
                 break;
             }
         }
         TextEntity rankCurrent = new TextEntity();
-        rankCurrent.setTextContent("你的位置：" + userRankIndex + "/" + mineConfig.getUsers().size());
+        rankCurrent.setTextContent("你的位置：" + userRankIndex + "/" + global.getUserRank().size());
         rankCurrent.setFontColor(new Color(126, 126, 126, 144));
         rankCurrent.setX(440f);
         rankCurrent.setY(280f);
