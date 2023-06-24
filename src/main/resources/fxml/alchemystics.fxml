@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="667.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.duoduo.controller.AlchemyticsController">
+   <children>
+      <AnchorPane fx:id="newEleImg" layoutX="189.0" layoutY="124.0" prefHeight="91.0" prefWidth="96.0" style="-fx-background-image: url(&quot;alchemytics/img/0.png&quot;); -fx-background-repeat: no-repeat; -fx-background-position: center;" />
+      <VBox layoutX="413.0" layoutY="-3.0" prefHeight="400.0" prefWidth="187.0" spacing="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="unlockedNum" text="已解锁（4/616）" />
+            <Label fx:id="unlockedDetail" text="11111111111111111111111111111111111111111111111" wrapText="true" />
+         </children>
+         <padding>
+            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+         </padding>
+      </VBox>
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="70.0" prefWidth="211.0" style="-fx-background-color: #ddd;">
+         <children>
+            <HBox fx:id="myEleImg" prefHeight="70.0" prefWidth="76.0" />
+            <VBox prefHeight="70.0" prefWidth="138.0" spacing="6.0">
+               <children>
+                  <Label fx:id="myName" text="你 2400">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="myEleName" text="风" />
+               </children>
+               <padding>
+                  <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="251.0" layoutY="14.0" prefHeight="70.0" prefWidth="211.0" style="-fx-background-color: #ddd;">
+         <children>
+            <HBox fx:id="targetEleImg" prefHeight="70.0" prefWidth="76.0" />
+            <VBox prefHeight="70.0" prefWidth="137.0" spacing="6.0">
+               <children>
+                  <Label fx:id="targetName" text="森羊 4200">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="targetEleName" text="风" />
+               </children>
+               <padding>
+                  <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <Label fx:id="message" layoutX="14.0" layoutY="283.0" text="恭喜你合成了新元素" />
+      <Label fx:id="newEleMerge" layoutX="204.0" layoutY="247.0" text="风+风=压力" textAlignment="CENTER" />
+      <Label fx:id="globalMessage" layoutX="14.0" layoutY="298.0" text="恭喜你合成了新元素&#10;恭喜你合成了新元素&#10;恭喜你合成了新元素&#10;恭喜你合成了新元素&#10;恭喜你合成了新元素" />
+   </children>
+</AnchorPane>

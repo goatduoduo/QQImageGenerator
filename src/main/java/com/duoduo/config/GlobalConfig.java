@@ -44,6 +44,12 @@ public class GlobalConfig {
     @JSONField(name = "Messages")
     private List<String> globalMessages;
 
+    /**
+     * 炼金小游戏已解锁的元素，true代表已解锁，false为未解锁，不允许缺省值
+     */
+    @JSONField(name = "Alchemist Unlocked Elements")
+    private List<Boolean> unlockedElements;
+
 
     public List<Integer> getItemsLeft() {
         return itemsLeft;
@@ -89,6 +95,14 @@ public class GlobalConfig {
         this.userConfigs = userConfigs;
     }
 
+    public List<Boolean> getUnlockedElements() {
+        return unlockedElements;
+    }
+
+    public void setUnlockedElements(List<Boolean> unlockedElements) {
+        this.unlockedElements = unlockedElements;
+    }
+
     /**
      * 如果为null则生成一个默认的config
      *
@@ -98,6 +112,7 @@ public class GlobalConfig {
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setUsers(new ArrayList<>());
         globalConfig.setItemsLeft(new ArrayList<>());
+        globalConfig.setUnlockedElements(new ArrayList<>());
         return globalConfig;
     }
 

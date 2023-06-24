@@ -1,15 +1,8 @@
 package com.duoduo;
 
-import com.duoduo.component.MiningIncCalculation;
-import com.duoduo.component.RandomColorComponent;
-import com.duoduo.component.TenRoundsComponent;
+import com.duoduo.component.AlchemyticsCalculation;
 import com.duoduo.config.GlobalConfig;
 import com.duoduo.util.ConfigUtil;
-import com.duoduo.util.Operations;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author: ${USER}
@@ -35,7 +28,9 @@ public class Main {
             globalConfig = new GlobalConfig();
         }
         if(args.length == 0){
-            MiningIncCalculation.executeOperation(globalConfig);
+            AlchemyticsCalculation alchemyticsCalculation = new AlchemyticsCalculation();
+            alchemyticsCalculation.executeOperation(globalConfig);
+            //MiningIncCalculation.executeOperation(globalConfig);
         }else{
             switch (args[0]) {
                 case "addUser":

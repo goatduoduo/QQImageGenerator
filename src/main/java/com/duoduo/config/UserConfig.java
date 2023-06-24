@@ -43,6 +43,8 @@ public class UserConfig {
     @JSONField(name = "Messages", ordinal = 6)
     private List<String> messages;
 
+
+
     public UserConfig(String name, String qq) {
         this.name = name;
         this.qq = qq;

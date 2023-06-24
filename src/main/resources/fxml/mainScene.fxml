@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<HBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.duoduo.controller.MainScene">
+   <children>
+      <VBox minHeight="600.0" minWidth="800.0" prefHeight="601.0" prefWidth="800.0" style="-fx-background-color: #eee;">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="800.0" spacing="6.0">
+               <children>
+                  <Label fx:id="userNameLabel" text="小羽" textFill="#5b5b5b">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="levelLabel" text="Lvl 20" textFill="#545454">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" fillHeight="false" minHeight="13.0" prefHeight="17.0" prefWidth="350.0">
+                     <children>
+                        <Rectangle fx:id="expBarDark" arcHeight="5.0" arcWidth="5.0" fill="#c6c6c6" height="20.0" stroke="TRANSPARENT" strokeType="INSIDE" width="176.0" />
+                        <Rectangle fx:id="expBarLight" arcHeight="5.0" arcWidth="5.0" fill="#cccccc3e" height="20.0" stroke="TRANSPARENT" strokeType="INSIDE" width="173.0" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="expDetail" text="21000 / 23000 （+400）" textFill="#545454">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <VBox fx:id="gameAreaVbox" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="375.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+               </children>
+            </VBox>
+            <HBox prefHeight="197.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox fx:id="globalMessageVbox" prefHeight="173.0" prefWidth="584.0" spacing="6.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="全局消息" textFill="#757575">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                        <Label text="&quot;2023-03-02: 奶诺真是个倒霉鬼，花费了2000经验值重置矿脉&quot;" />
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                     </padding>
+                  </VBox>
+                  <VBox fx:id="rankVbox" prefHeight="189.0" prefWidth="216.0" spacing="3.0">
+                     <children>
+                        <Label text="排行榜" textFill="#757575">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="#1 某某某：Lvl:12 Exp:21000" />
+                        <Label text="你的排名为19 位于20人中的倒数&#10;你现在获得后发优势" />
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox minWidth="300.0" prefWidth="364.0">
+         <children>
+            <Label text="稀有物品" textFill="#5b5b5b">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <FlowPane fx:id="rareItemsFlowPane" alignment="CENTER_LEFT" columnHalignment="CENTER" hgap="6.0" prefHeight="264.0" prefWidth="365.0" vgap="6.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7fd67a92" height="80.0" stroke="TRANSPARENT" strokeType="INSIDE" width="79.0" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="6.0" left="10.0" right="6.0" top="6.0" />
+               </padding>
+            </FlowPane>
+         </children>
+      </VBox>
+   </children>
+</HBox>
